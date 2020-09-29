@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { withStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import SigninButtonComp from "../src/components/SigninButtonComp";
 
 const styles = (theme) => ({
   paper: {
@@ -60,6 +61,11 @@ class App extends Component {
     console.log("app loaded");
   }
 
+  handleChangeView = (thisView) => {
+    console.log(thisView);
+    this.setState({currentView: thisView});
+  };
+
   render() {
     const { classes } = this.props;
     const { currentView, loading } = this.state;
@@ -102,39 +108,10 @@ class App extends Component {
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
               />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                Sign In
-              </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link
-                    href="#"
-                    variant="body2"
-                    onClick={() => {
-                      this.setState({ currentView: "forgotpwd" });
-                    }}
-                  >
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link
-                    href="#"
-                    variant="body2"
-                    onClick={() => {
-                      this.setState({ currentView: "signup" });
-                    }}
-                  >
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
+              <SigninButtonComp
+                buttonText="Sign In Once"
+                onChangeView={this.handleChangeView}
+              />
             </form>
           )}
           {currentView === "signup" && !loading && <h2>Sign up view</h2>}
