@@ -14,6 +14,7 @@ import Container from "@material-ui/core/Container";
 import { withStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import SigninButtonComp from "../src/components/SigninButtonComp";
+import axios from "axios";
 
 const styles = (theme) => ({
   paper: {
@@ -54,16 +55,19 @@ class App extends Component {
     this.state = {
       currentView: "signin",
       loading: false,
+      userTypes: [],
     };
   }
 
-  componentDidMount() {
-    console.log("app loaded");
-  }
+  componentDidMount = async () => {
+    let data = await axios.get("./data/userdata.json");
+    this.setState({ userTypes: data.data.userTypes });
+    console.log(data.data);
+  };
 
   handleChangeView = (thisView) => {
     console.log(thisView);
-    this.setState({currentView: thisView});
+    this.setState({ currentView: thisView });
   };
 
   render() {
@@ -104,6 +108,14 @@ class App extends Component {
                 id="password"
                 autoComplete="current-password"
               />
+              <ul>
+                {this.state.userTypes.length > 0 && this.state.userTypes.map((row, i) => (
+                  <div key={i}>
+                    <h1>Element {i + 1}</h1>
+                    <li>{row}</li>
+                  </div>
+                ))}
+              </ul>
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
